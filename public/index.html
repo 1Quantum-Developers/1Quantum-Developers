@@ -4,14 +4,77 @@
   <meta charset="UTF-8">
   <title>Quantum Developers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Correct relative path -->
-  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Embedded CSS -->
+  <style>
+    :root {
+      --bg: #0a0d12;
+      --text: #e9eef7;
+      --muted: #b8c0cc;
+      --primary: #6ee7ff;
+      --primary-700: #2bc0ea;
+      --success: #3ad29f;
+      --danger: #ff6b6b;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: var(--primary);
+    }
+
+    form {
+      margin-top: 20px;
+      max-width: 400px;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #1b2230;
+      background: #0b1016;
+      color: var(--text);
+    }
+
+    button {
+      background: var(--primary);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: var(--primary-700);
+    }
+
+    #form-status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
 </head>
 <body>
-  <!-- Your content here -->
   <h1>Welcome to Quantum Developers</h1>
   <p>Building the future with precision and imagination.</p>
 
+  <!-- Contact Form -->
   <form id="contact-form">
     <input id="name" name="name" placeholder="Name" required>
     <input id="email" name="email" type="email" placeholder="Email" required>
@@ -24,6 +87,52 @@
     <p>© <span id="year"></span> Quantum Developers</p>
   </footer>
 
-  <script src="/script.js"></script>
+  <!-- Embedded JavaScript -->
+  <script>
+    // Handle contact form submission via POST
+    async function handleContactSubmit(event) {
+      event.preventDefault();
+      const status = document.getElementById('form-status');
+      status.textContent = 'Sending…';
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        message: document.getElementById('message').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          status.textContent = 'Thanks for reaching out — we’ll get back to you soon.';
+          status.style.color = 'var(--success)';
+          document.getElementById('contact-form').reset();
+        } else {
+          status.textContent = data.error || 'Something went wrong. Please try again.';
+          status.style.color = 'var(--danger)';
+        }
+      } catch (err) {
+        status.textContent = 'Network error. Please try again later.';
+        status.style.color = 'var(--danger)';
+      }
+    }
+
+    // Set current year in footer
+    function setYear() {
+      const y = new Date().getFullYear();
+      document.getElementById('year').textContent = y;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setYear();
+      document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
+    });
+  </script>
 </body>
 </html>
