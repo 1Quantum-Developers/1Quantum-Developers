@@ -1,17 +1,18 @@
-// Fetch company info on load to keep content in sync with backend
+// Optionally fetch company info via POST (disabled by default to avoid GETs entirely)
 async function loadCompanyInfo() {
   try {
-    const res = await fetch('/api/company');
+    const res = await fetch('/api/company', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
     const data = await res.json();
-
-    // Optionally inject dynamic content
     document.title = `${data.name} — ${data.tagline}`;
   } catch (err) {
     console.error('Failed to load company info', err);
   }
 }
 
-// Contact form submission
+// Contact form submission via POST
 async function handleContactSubmit(event) {
   event.preventDefault();
   const status = document.getElementById('form-status');
@@ -53,6 +54,7 @@ function setYear() {
 
 document.addEventListener('DOMContentLoaded', () => {
   setYear();
-  loadCompanyInfo();
+  // Uncomment if you want to set the title from the backend using POST:
+  // loadCompanyInfo();
   document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
 });

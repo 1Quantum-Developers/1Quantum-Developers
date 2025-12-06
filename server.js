@@ -14,8 +14,8 @@ app.use(express.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Example API routes
-app.get('/api/company', (req, res) => {
+// POST-only API routes
+app.post('/api/company', (req, res) => {
   res.json({
     name: 'Quantum Developers',
     tagline: 'Building the future with precision and imagination.',
@@ -37,11 +37,6 @@ app.post('/api/contact', (req, res) => {
   // In a real app, save to DB or send email here.
   console.log('Contact submission:', { name, email, message });
   res.json({ ok: true, received: { name, email, message } });
-});
-
-// Fallback to index.html for client-side routing (if needed)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
