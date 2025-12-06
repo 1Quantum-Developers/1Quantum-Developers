@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
@@ -11,7 +10,7 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
+// Serve static files from /public
 app.use(express.static(path.join(__dirname, 'public')));
 
 // POST-only API routes
@@ -34,7 +33,6 @@ app.post('/api/contact', (req, res) => {
   if (!name || !email || !message) {
     return res.status(400).json({ ok: false, error: 'Missing required fields.' });
   }
-  // In a real app, save to DB or send email here.
   console.log('Contact submission:', { name, email, message });
   res.json({ ok: true, received: { name, email, message } });
 });
@@ -42,5 +40,5 @@ app.post('/api/contact', (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Quantum Developers website running at http://localhost:${PORT}`);
+  console.log(`Quantum Developers running at http://localhost:${PORT}`);
 });

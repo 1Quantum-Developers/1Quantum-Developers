@@ -1,4 +1,4 @@
-// Optionally fetch company info via POST (disabled by default to avoid GETs entirely)
+// Optional: fetch company info via POST
 async function loadCompanyInfo() {
   try {
     const res = await fetch('/api/company', {
@@ -12,7 +12,7 @@ async function loadCompanyInfo() {
   }
 }
 
-// Contact form submission via POST
+// Handle contact form submission
 async function handleContactSubmit(event) {
   event.preventDefault();
   const status = document.getElementById('form-status');
@@ -54,7 +54,7 @@ function setYear() {
 
 document.addEventListener('DOMContentLoaded', () => {
   setYear();
-  // Uncomment if you want to set the title from the backend using POST:
+  // Uncomment to dynamically set title from backend:
   // loadCompanyInfo();
   document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
 });
