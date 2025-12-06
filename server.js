@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from /public
+// This ensures styles.css, script.js, images, etc. are served with correct MIME types
 app.use(express.static(path.join(__dirname, 'public')));
 
 // POST-only API routes

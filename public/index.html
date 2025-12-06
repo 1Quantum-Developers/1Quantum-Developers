@@ -1,167 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>Quantum Developers</title>
-  <meta name="description" content="Quantum Developers — Building the future with precision and imagination." />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Correct relative path -->
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav">
-      <div class="brand">
-        <span class="logo">Q</span>
-        <span class="name">Quantum Developers</span>
-      </div>
-      <nav class="menu">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="btn btn-outline">Contact</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Your content here -->
+  <h1>Welcome to Quantum Developers</h1>
+  <p>Building the future with precision and imagination.</p>
 
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <h1>Build with confidence. Scale without limits.</h1>
-        <p>We craft software, cloud, and AI solutions that make complexity feel effortless.</p>
-        <div class="cta">
-          <a href="#contact" class="btn btn-primary">Start a project</a>
-          <a href="#services" class="btn btn-ghost">Explore services</a>
-        </div>
-        <div class="trust">
-          <span>Trusted by startups and enterprises worldwide</span>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="orb"></div>
-        <div class="grid"></div>
-      </div>
-    </div>
-  </section>
+  <form id="contact-form">
+    <input id="name" name="name" placeholder="Name" required>
+    <input id="email" name="email" type="email" placeholder="Email" required>
+    <textarea id="message" name="message" placeholder="Message" required></textarea>
+    <button type="submit">Send</button>
+    <p id="form-status"></p>
+  </form>
 
-  <section id="services" class="section">
-    <div class="container">
-      <h2>Services</h2>
-      <p class="section-intro">From idea to impact, we design and deliver end‑to‑end solutions.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Custom software engineering</h3>
-          <p>Modern web, mobile, and platform development tailored to your roadmap and users.</p>
-        </article>
-        <article class="card">
-          <h3>Cloud & DevOps</h3>
-          <p>Resilient, scalable infrastructure with CI/CD, IaC, observability, and cost optimization.</p>
-        </article>
-        <article class="card">
-          <h3>AI & data solutions</h3>
-          <p>Data pipelines, ML, and intelligent automation to unlock measurable outcomes.</p>
-        </article>
-        <article class="card">
-          <h3>Product design & UX</h3>
-          <p>Research‑driven design systems and delightful experiences that convert and retain.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="work" class="section alt">
-    <div class="container">
-      <h2>Selected work</h2>
-      <div class="showcase">
-        <div class="showcase-item">
-          <div class="badge">Fintech</div>
-          <h3>Payments platform</h3>
-          <p>Scaled to millions of transactions with zero downtime and clear audit trails.</p>
-        </div>
-        <div class="showcase-item">
-          <div class="badge">SaaS</div>
-          <h3>Analytics suite</h3>
-          <p>Unified metrics across teams with robust governance and role‑based access.</p>
-        </div>
-        <div class="showcase-item">
-          <div class="badge">Retail</div>
-          <h3>Personalization engine</h3>
-          <p>Lifted conversions through real‑time recommendations and A/B experimentation.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="section">
-    <div class="container about-grid">
-      <div>
-        <h2>About Quantum Developers</h2>
-        <p>We’re engineers, designers, and pragmatists who believe velocity and craft can coexist.</p>
-        <ul class="bullets">
-          <li><strong>Principle:</strong> Outcomes over output.</li>
-          <li><strong>Approach:</strong> Collaborative, transparent, and data‑informed.</li>
-          <li><strong>Culture:</strong> Curiosity, kindness, and relentless improvement.</li>
-        </ul>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="num">99.95%</div>
-          <div class="label">Uptime delivered</div>
-        </div>
-        <div class="stat">
-          <div class="num">10x</div>
-          <div class="label">Typical performance gains</div>
-        </div>
-        <div class="stat">
-          <div class="num">25+</div>
-          <div class="label">Products launched</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="section alt">
-    <div class="container">
-      <h2>Contact</h2>
-      <p class="section-intro">Tell us about your goals. We’ll respond within two business days.</p>
-      <form id="contact-form" class="contact-form">
-        <div class="form-row">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Your name" required />
-        </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@company.com" required />
-        </div>
-        <div class="form-row">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5" placeholder="What can we build together?" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send message</button>
-        <p id="form-status" class="form-status" aria-live="polite"></p>
-      </form>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="brand small">
-          <span class="logo">Q</span>
-          <span class="name">Quantum Developers</span>
-        </div>
-        <p class="footnote">© <span id="year"></span> Quantum Developers. All rights reserved.</p>
-      </div>
-      <div class="footer-links">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
+  <footer>
+    <p>© <span id="year"></span> Quantum Developers</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
