@@ -10,6 +10,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from /public
 // This ensures styles.css, script.js, images, etc. are served with correct MIME types
@@ -37,6 +38,40 @@ app.post('/api/contact', (req, res) => {
   }
   console.log('Contact submission:', { name, email, message });
   res.json({ ok: true, received: { name, email, message } });
+});
+
+// New: Accept reports submitted from reporting page
+// Expected JSON payload:
+// {
+//   name?: string,
+//   email?: string,
+//   category: 'abuse' | 'vulnerability' | 'policy' | 'other',
+//   summary: string,
+//   details?: string,
+//   timestamp?: string,
+//   affected?: string,
+//   severity?: 'low'|'medium'|'high'|'critical'
+// }
+app.post('/api/report', (req, res) => {
+  const payload = req.body || {};
+  const { email, category, summary } = payload;
+
+  if (!category || !summary) {
+    return res.status(400).json({ ok: false, error: 'Missing required fields: category and summary are required.' });
+  }
+
+  // Basic sanity checks (more validation/sanitization should be added for production)
+  const id = `rpt_${Date.now().toString(36)}`;
+
+  // Log the report to server logs. In production, replace with secure storage (database, ticketing system).
+  console.log('New report received:', { id, ...payload });
+
+  // Example response: acknowledge receipt and return an id for follow-up
+  res.json({
+    ok: true,
+    id,
+    message: 'Report received. We will triage it and get back to you as soon as possible.'
+  });
 });
 
 // Start server

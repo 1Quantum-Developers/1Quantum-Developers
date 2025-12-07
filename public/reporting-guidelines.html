@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reporting Guidelines — Quantum Developers</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; max-width:900px; margin:36px auto; padding:0 16px; line-height:1.5; color:#111; }
+    h1,h2,h3 { color:#0b3b6f; }
+    pre { background:#f6f8fa; padding:12px; border-radius:6px; overflow:auto; }
+    .card { border:1px solid #e1e4e8; padding:18px; border-radius:8px; margin-bottom:18px; background:#fff; }
+    label { display:block; margin:8px 0 4px; font-weight:600; }
+    input[type="text"], input[type="email"], textarea, select { width:100%; padding:8px; border:1px solid #d1d5da; border-radius:6px; }
+    button { background:#0b3b6f; color:white; padding:10px 14px; border:none; border-radius:6px; cursor:pointer; }
+    small { color:#6a737d; }
+  </style>
+</head>
+<body>
+  <h1>Reporting Guidelines</h1>
+
+  <div class="card">
+    <p>Thank you for taking the time to report an issue. These guidelines help us quickly understand, triage, and resolve reports — especially when evidence is provided clearly and concisely.</p>
+  </div>
+
+  <h2>What to report</h2>
+  <ul>
+    <li>Security vulnerabilities or potential exploits</li>
+    <li>Abusive or illegal content or behavior</li>
+    <li>Policy violations (copyright, trademark, harassment)</li>
+    <li>Privacy or data-leak incidents</li>
+    <li>Other incidents or concerns affecting the project or users</li>
+  </ul>
+
+  <h2>What we need from you</h2>
+  <p>When filing a report please include as many of the following as you can:</p>
+  <ul>
+    <li><strong>Category:</strong> (e.g. vulnerability, abuse, policy, privacy)</li>
+    <li><strong>Summary:</strong> One-line description of the problem</li>
+    <li><strong>Details:</strong> Full description of what you observed</li>
+    <li><strong>Steps to reproduce:</strong> Exact steps, URLs, commands, and payloads</li>
+    <li><strong>Evidence:</strong> Screenshots, logs, network captures, stack traces, timestamps</li>
+    <li><strong>Affected targets:</strong> Accounts, repos, services, or endpoints involved</li>
+    <li><strong>Severity estimate:</strong> Low / Medium / High / Critical</li>
+    <li><strong>Contact info (optional):</strong> Email and name if you want follow-up</li>
+  </ul>
+
+  <h2>Example report template</h2>
+  <pre>
+Category: vulnerability
+Summary: Unauthorized read access to private config on /api/config
+Details: When sending GET /api/config with X-Experiment: 1 header the endpoint returns the private config for other users.
+Steps to reproduce:
+  1) curl -H "X-Experiment: 1" https://example.com/api/config?user=123
+  2) Observe JSON with keys "secretKey"
+Evidence: screenshot and curl output attached
+Affected: /api/config endpoint, user IDs 120..125
+Severity: high
+Contact: hacker@example.com (optional)
+  </pre>
+
+  <h2>How to submit</h2>
+  <p>You can submit a report using the web form below. If you prefer email, see SECURITY.md for secure disclosure instructions for security vulnerabilities.</p>
+
+  <div class="card" id="formCard">
+    <h3>Submit a report</h3>
+    <form id="reportForm">
+      <label for="category">Category</label>
+      <select id="category" required>
+        <option value="">Choose a category</option>
+        <option value="vulnerability">Security vulnerability</option>
+        <option value="abuse">Abuse or harassment</option>
+        <option value="privacy">Privacy / data leak</option>
+        <option value="policy">Policy violation (copyright, trademark)</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="summary">Summary</label>
+      <input id="summary" type="text" required placeholder="One-line summary"/>
+
+      <label for="details">Details</label>
+      <textarea id="details" rows="6" placeholder="Full description, steps to reproduce, evidence links"></textarea>
+
+      <label for="affected">Affected targets (optional)</label>
+      <input id="affected" type="text" placeholder="Repository, URL, account, endpoint"/>
+
+      <label for="severity">Severity</label>
+      <select id="severity">
+        <option value="">Not sure</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+        <option value="critical">Critical</option>
+      </select>
+
+      <label for="email">Contact email (optional)</label>
+      <input id="email" type="email" placeholder="your@example.com"/>
+
+      <div style="margin-top:12px;">
+        <button type="submit">Send report</button>
+        <small id="status" style="margin-left:12px;"></small>
+      </div>
+    </form>
+    <p style="margin-top:12px;"><small>We do not accept large file attachments through this form. If you need to share large logs or captures, please contact us directly (see SECURITY.md) or provide a secure link.</small></p>
+  </div>
+
+  <h2>Confidentiality and disclosure</h2>
+  <p>We treat reports confidentially during triage. If your report is about a security vulnerability and you want a coordinated disclosure, please follow the instructions in SECURITY.md. We will not publish identifying information about reporters without consent.</p>
+
+  <h2>What to expect</h2>
+  <ul>
+    <li>Acknowledgement: within 1–3 business days for most reports.</li>
+    <li>Triage and initial assessment: timeline depends on severity; urgent issues may be addressed immediately.</li>
+    <li>Follow-up: we may ask for additional evidence or permission to share more information.</li>
+  </ul>
+
+  <script>
+    (function () {
+      const form = document.getElementById('reportForm');
+      const status = document.getElementById('status');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        status.textContent = 'Sending...';
+        const payload = {
+          category: document.getElementById('category').value,
+          summary: document.getElementById('summary').value.trim(),
+          details: document.getElementById('details').value.trim(),
+          affected: document.getElementById('affected').value.trim(),
+          severity: document.getElementById('severity').value,
+          email: document.getElementById('email').value.trim()
+        };
+
+        try {
+          const res = await fetch('/api/report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (res.ok && data.ok) {
+            status.textContent = 'Report submitted. ID: ' + (data.id || 'n/a');
+            form.reset();
+          } else {
+            status.textContent = 'Error: ' + (data.error || 'Could not submit report.');
+          }
+        } catch (err) {
+          status.textContent = 'Network error. Try again later.';
+        }
+        setTimeout(() => { status.textContent = ''; }, 8000);
+      });
+    })();
+  </script>
+</body>
+</html>
