@@ -222,7 +222,8 @@
         <h1>Build with confidence. Scale without limits.</h1>
         <p>We craft software, cloud, and AI solutions that make complexity feel effortless.</p>
         <div class="cta">
-          <a href="#contact" class="btn btn-primary">Start a project</a>
+          <!-- Added an id so we can target this anchor from JS and send a postMessage when clicked -->
+          <a href="#contact" id="start-project-btn" class="btn btn-primary">Start a project</a>
           <a href="#services" class="btn btn-ghost">Explore services</a>
         </div>
         <p class="section-intro" style="margin-top:12px">Trusted by startups and enterprises worldwide.</p>
@@ -488,12 +489,45 @@
       onScroll();
     }
 
+    // Feature: Send a structured postMessage when "Start a project" is clicked.
+    // This is useful when the page is embedded inside an iframe and the parent wants to react.
+    function initStartProjectMessage() {
+      const btn = document.getElementById('start-project-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', (e) => {
+        // Construct a structured payload so the parent can easily validate and act on it.
+        const payload = {
+          type: 'start-project',
+          action: 'open-contact',
+          source: '1Quantum-Developers',
+          timestamp: Date.now(),
+          // include the target anchor/href in case parent wants to know where to navigate
+          target: '#contact'
+        };
+
+        try {
+          // If inside an iframe, window.parent !== window. We still use '*' here for compatibility;
+          // in production prefer a specific origin and validate messages on the parent side.
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage(payload, '*');
+          }
+        } catch (err) {
+          // don't break UX if postMessage fails
+          console.warn('Failed to postMessage to parent:', err);
+        }
+
+        // allow default behavior (anchor navigation/scroll) to proceed
+      });
+    }
+
     // Wire everything up
     document.addEventListener('DOMContentLoaded', () => {
       setYear();
       initThemeToggle();
       initTestimonials();
       initBackToTop();
+      initStartProjectMessage();
       document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
     });
   </script>
