@@ -63,8 +63,18 @@ app.post('/api/report', (req, res) => {
   // Basic sanity checks (more validation/sanitization should be added for production)
   const id = `rpt_${Date.now().toString(36)}`;
 
+  // Sanitize string fields in the payload to prevent log injection
+  const sanitizedPayload = {};
+  for (const [key, value] of Object.entries(payload)) {
+    if (typeof value === 'string') {
+      sanitizedPayload[key] = value.replace(/[\n\r]/g, '');
+    } else {
+      sanitizedPayload[key] = value;
+    }
+  }
+
   // Log the report to server logs. In production, replace with secure storage (database, ticketing system).
-  console.log('New report received:', { id, ...payload });
+  console.log('New report received:', { id, ...sanitizedPayload });
 
   // Example response: acknowledge receipt and return an id for follow-up
   res.json({
